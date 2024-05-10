@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/central/index/index",
+    "pages/central/service/service",
+    "pages/central/character/character",
+    "pages/peripheral/index/index",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Tommy的蓝牙工具",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "tabBar": {
+    "custom": false,
+    "backgroundColor": "#FFFFFF",
+    "color": "#999999",
+    "selectedColor": "#3bafcc",
+    "list": [
+      {
+        "pagePath": "pages/central/index/index",
+        "text": "中心设备"
+      },
+      {
+        "pagePath": "pages/peripheral/index/index",
+        "text": "外围设备"
+      },
+      {
+        "pagePath": "pages/logs/logs",
+        "text": "Log"
+      }
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+<view class="toolBar">
+  <view bind:tap="doScan">扫描</view>
+  <view bind:tap="setFilter">{{filter_config.filter_label}}</view>
+</view>
+<view class="scanFilter" hidden="{{filter_config.isFilterHidden}}">
+  <label class="scan-filter-cbx">
+    <checkbox checked="true"/>只显示有名字的设备
+  </label>
+  <view>
+    <label class="filter-by-rssi">
+      <checkbox checked="true"/>通过RSSI过滤设备
+    </label>
+    <view class="slider">
+      <text>最小的RSSI:{{filter_config.min_rssi}}</text>
+      <slider bindchanging="sliderChanging" min="-200" max="-50" show-value/>
+    </view>
+  </view>
+</view>
+<scroll-view class="search-items" scroll-y>
+  <view class="search-item">
+    <view class="s-i-left">
+      <view class="d_name">我的鼠标</view>
+      <view class="d_addr">AA:BB:CC:DD:EE:FF</view>
+      <view class="d_rssi">-50dBm</view>
+      <view wx:if="{{isConnectable}}" class="d_connectable">
+        可连接
+      </view>
+      <view wx:else class="d_connectable">
+        不可连接
+      </view>
+    </view>
+    <view class="s-i-right">
+      <view wx-if="{{isConnectable}}">
+        <image src="/imgags/more.png" class="connect-icon"></image>
+      </view>
+    </view>
+  </view>
+
+  <view wx:for="{{device_lists}}" wx:key="index" class="search-item" bindtap="showDetailAdv">
+    <view class="s-i-left">
+      <view class="d_name">{{item.name}}</view>
+      <view class="d_addr">{{item.addr}}</view>
+      <view class="d_rssi">{{item.rssi}}dBm</view>
+      <!-- <view wx:if="{{item.connectable}}" class="d_connectable">
+        可连接
+      </view>
+      <view wx:else class="d_connectable">
+        不可连接
+      </view> -->
+    </view>
+    <view class="s-i-right">
+      <view wx-if="{{item.connectable}}" catch:tap="doConnect">
+        <image src="/imgags/more.png" class="connect-icon"></image>
+      </view>
+    </view>
+  </view>
+  <view class="gotopBtn" hidden="{{!cangotop}}" catchtap="goTop">Back</view>
+</scroll-view>
+<button bindtap="showActionSheet">show action sheet</button>
+
+<view class='toast-box' hidden='{{!showToastBox}}' catchtouchmove="toast_touch_move">
+  <view class='showToast'>
+      <view class='toast-title'>
+          <text>广播包详细信息：</text>
+      </view>
+      <view class='toast-main'>
+        <view>RSSI:</view>
+        <view>RSSI:</view>
+        <view>RSSI:</view>
+      </view>
+      <view class="toast-button-container">
+        <button catchtap='toast_confirm' class="toast-button">确定</button>
+      </view>
+  </view>
+</view>

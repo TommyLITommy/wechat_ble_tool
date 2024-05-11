@@ -29,7 +29,7 @@ page {
   font-weight: bold;
 }
 
-.search-item .d_addr,.d_rssi,.d_connectable{
+.search-item .d_addr,.d_rssi,.d_connectable,.d_service,.d_deviceid {
   font-size: 35rpx;
   font-weight: lighter;
 }
@@ -50,7 +50,7 @@ page {
   position: fixed;
   right: 20rpx;
   bottom: 20rpx;
-  font-size: 54rpx;
+  font-size: 40rpx;
   font-weight: bold;
   width: 60px;
   height: 60px;
@@ -65,20 +65,21 @@ page {
 .toast-box {
   width: 100%;
   height: 100%;
-  /* opacity: 1; */
-  opacity: 0.5;
+  opacity: 1;
   position: fixed;
   top: 0px;
   left: 0px;
-  background-color: pink;
+  /* filter: blur(10px); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .showToast {
-  position: absolute;
-  opacity: 1;
-  width: 70%;
-  margin-left: 15%;
-  margin-top: 40%;
+  margin: 10rpx;
+  border: solid 5rpx black;
+  border-radius: 16rpx;
+  background-color: lightgray;
 }
 
 .toast-title {
@@ -87,30 +88,24 @@ page {
   color: white;
   padding-top: 2vh;
   padding-bottom: 2vh;
-  border-top-right-radius: 16rpx;
-  border-top-left-radius: 16rpx;
+  border-radius: 16rpx;
 }
 
 .toast-main {
-  padding-top: 2vh;
-  padding-bottom: 2vh;
-  background-color: white;
-  text-align: center;
-}
-
-.toast-button-container {
-  margin: 0;
-  padding: 0;
-  width: 100%;
+  padding: 10rpx;
   display: flex;
-  background-color: white;
-  color: red;
-  border-radius:  0 0 10px 10px;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: start;
+  /* background-color: white; */
 }
 
 .toast-button {
-  background-color: lightgreen;
+  width: 100%;
+  background-color: #2196f3;
+  color: white;
 }
 
+.toast-item {
+  padding: 10rpx;
+  border-bottom: solid 2rpx black;
+}

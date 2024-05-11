@@ -1,29 +1,53 @@
 // pages/central/central.js
 // const mocking_device_lists = require('../../utils/mocking_data.js')
+import { sdBLE } from '../../../utils/sdBLE.js';
+let sdBLEObj = new sdBLE();
+
+function inArray(arr, key, val) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][key] === val) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    device_lists: [],
+    devices_list: [],
     cangotop: false,
-    filter_config: {
-      filter_label: "显示过滤设置",
-      isFilterHidden: true,
-      filter_by_name: true,
-      filter_by_addr: true,
-      filter_by_rssi: true,
-      min_rssi: -50,
-      displayNameOnly:true
-    },
-    showToastBox: false
+
+    //filter config
+    filter_label: "显示过滤设置",
+    isFilterHidden: true,
+    filter_by_name: true,
+    filter_by_addr: true,
+    filter_by_rssi: false,
+    min_rssi: -50,
+    displayNameOnly:true,
+  
+    showToastBox: false,
+    isDiscovering: false,
+    showDetailAdvDevice: undefined
+  },
+
+  cleanDevicesList() {
+    this.data.devices_list = []
+    this.setData({
+      devices_list: this.data.devices_list
+    })  
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    return
+
     for (let i = 0; i < 20; i++) {
       let device = {
         name: `Device ${i}`,
@@ -31,10 +55,10 @@ Page({
         rssi: `-${i}`,
         connectable: i % 2 == 0
       }
-      this.data.device_lists.push(device)
+      this.data.devices_list.push(device)
     }
     this.setData({
-      device_lists: this.data.device_lists
+      devices_list: this.data.devices_list
     })
   },
 
@@ -87,6 +111,45 @@ Page({
 
   },
 
+  /* BLE相关操作 */
+  async startDiscovery() {
+    this.cleanDevicesList()
+    sdBLEObj.onBluetoothAdapterStateChange()
+    sdBLEObj.onBLEConnectionStateChange()
+
+    await sdBLEObj.closeBluetoothAdapter();
+    let res = await sdBLEObj.openBluetoothAdapter();
+    if (res.ok) {
+      // sdBLEObj.startBluetoothDevicesDiscovery((name, RSSI, deviceId) => {
+      //   console.log(name, RSSI, deviceId)
+      // })
+      sdBLEObj.startBluetoothDevicesDiscovery((devices) => {
+        // console.log("devices:", devices)
+        devices.forEach(device => {
+          console.log(device.name, device.localName, device.RSSI)
+
+          if (this.data.filter_by_name) {
+            if (device.RSSI === 0 || device.name === "" || device.name === "undefined") {
+              return
+            }
+          }
+
+          let foundedDevices = this.data.devices_list
+          const idx = inArray(foundedDevices, 'deviceId', device.deviceId)
+
+          if (idx === -1) {
+            foundedDevices[foundedDevices.length] = device
+          } else {
+            foundedDevices[idx] = device
+          }
+          this.setData({
+            devices_list: foundedDevices
+          })
+        })
+      })
+    }
+  },
+
   showActionSheet() {
     wx.showActionSheet({
       itemList: ['A', 'B', 'C'],
@@ -121,8 +184,12 @@ Page({
   
   showDetailAdv: function(e) {
     console.log("showDetailAdv:", e)
+    console.log(e.currentTarget.dataset.device)
+    this.data.showDetailAdvDevice = e.currentTarget.dataset.device
+    this.data.showToastBox = !this.data.showToastBox
     this.setData({
-      showToastBox: true
+      showDetailAdvDevice: this.data.showDetailAdvDevice,
+      showToastBox: this.data.showToastBox
     })
   },
 
@@ -136,21 +203,24 @@ Page({
   doScan: function(e) {
     console.log("doScan")
     this.goTop()
+    if (this.data.isDiscovering) {
+      sdBLEObj.stopBluetoothDevicesDiscovery()
+    } else {
+      this.startDiscovery()
+    }
+    this.data.isDiscovering = !this.data.isDiscovering
+    this.setData({
+      isDiscovering: this.data.isDiscovering
+    })
   },
 
   setFilter: function(e) {
     console.log("setFilter")
 
-    this.data.filter_config.isFilterHidden = !this.data.filter_config.isFilterHidden
-
-    if (this.data.filter_config.isFilterHidden) {
-      this.data.filter_config.filter_label = "显示过滤设置"
-    } else {
-      this.data.filter_config.filter_label = "隐藏过滤设置"
-    }
+    this.data.isFilterHidden = !this.data.isFilterHidden
 
     this.setData({
-      filter_config: this.data.filter_config
+      isFilterHidden: this.data.isFilterHidden
     })    
     this.goTop()
   },
@@ -170,5 +240,10 @@ Page({
     this.setData({
       showToastBox: false
     })
+  },
+
+  switchChanged: function(e) {
+    console.log(e)
+    console.log(e.detail.value)
   }
 })

@@ -8,7 +8,7 @@
 
   <view bind:tap="setFilter">
     <view wx:if="{{isFilterHidden}}">显示过滤设置</view>
-    <view wx:else>关闭过来设置</view>
+    <view wx:else>关闭过滤设置</view>
   </view>
 </view>
 <view class="scanFilter" hidden="{{isFilterHidden}}">

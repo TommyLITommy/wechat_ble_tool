@@ -120,7 +120,7 @@ class sdBLE {
       allowDuplicatesKey: true,
       success: (res) => {
         wx.onBluetoothDeviceFound((res) => {
-          console.log("onBluetoothDeviceFound ", res)
+          //console.log("onBluetoothDeviceFound ", res)
           callback(res.devices)
           return
           let isExist = false;

@@ -126,8 +126,7 @@ Page({
       sdBLEObj.startBluetoothDevicesDiscovery((devices) => {
         // console.log("devices:", devices)
         devices.forEach(device => {
-          console.log(device.name, device.localName, device.RSSI)
-
+          // console.log(device.name, device.localName, device.RSSI)
           if (this.data.filter_by_name) {
             if (device.RSSI === 0 || device.name === "" || device.name === "undefined") {
               return
@@ -163,7 +162,7 @@ Page({
   },
 
   onPageScroll: function(e) {
-    console.log("当前滚动距离:", e.scrollTop)
+    //console.log("当前滚动距离:", e.scrollTop)
     this.setData({
       cangotop: e.scrollTop > wx.getSystemInfoSync().windowHeight ? true: false
     });
@@ -232,6 +231,7 @@ Page({
       filter_config: this.data.filter_config
     })
   },
+
   toast_touch_move: function(e) {
     console.log("toast_touch_move")
   },
@@ -255,6 +255,6 @@ Page({
       devices_list: this.data.devices_list
     })
 
-    console.log("devcies_list:", this.data.devices_list)
+    //console.log("devcies_list:", this.data.devices_list)
   }
 })

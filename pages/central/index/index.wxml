@@ -4,6 +4,8 @@
     <view wx:else>开始扫描</view>
   </view>
   
+  <view class="rssi-descend" bind:tap="rssiDescend">RSSI降序排序</view>
+
   <view bind:tap="setFilter">
     <view wx:if="{{isFilterHidden}}">显示过滤设置</view>
     <view wx:else>关闭过来设置</view>
@@ -49,7 +51,7 @@
   </view>
   <view class="gotopBtn" hidden="{{!cangotop}}" catchtap="goTop">Back</view>
 </scroll-view>
-<button bindtap="showActionSheet">show action sheet</button>
+<!-- <button bindtap="showActionSheet">show action sheet</button> -->
 
 <view class='toast-box' hidden='{{!showToastBox}}' catchtouchmove="toast_touch_move">
   <view class='showToast'>

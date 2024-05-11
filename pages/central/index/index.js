@@ -245,5 +245,16 @@ Page({
   switchChanged: function(e) {
     console.log(e)
     console.log(e.detail.value)
+  },
+
+  rssiDescend: function(e) {
+    console.log("rssiDescend")
+    this.data.devices_list.sort((a, b) => a.RSSI < b.RSSI ? 1 : a.RSSI > b.RSSI ? -1 : 0)
+
+    this.setData({
+      devices_list: this.data.devices_list
+    })
+
+    console.log("devcies_list:", this.data.devices_list)
   }
 })

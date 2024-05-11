@@ -4,14 +4,25 @@ page {
 }
 
 .toolBar {
+  width: 100%;
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: #fff;
+  background-color: rgb(192, 134, 134);
   display: flex;
   justify-content: space-between;
-  padding: 10rpx 10rpx;
-  margin-bottom: 20rpx;
+  padding: 20rpx 0;
+  font-size: 40rpx;
+  /* margin-bottom: 20rpx; */
+  border: solid 2rpx black;
+}
+
+.rssi-descend {
+  /* background-color: red; */
+  display: flex;
+  font-size: 30rpx;
+  justify-content: center;
+  align-items: center;
 }
 
 .search-item {
